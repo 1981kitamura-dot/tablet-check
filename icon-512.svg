@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="110" fill="#FFF4D8"/>
+<circle cx="256" cy="275" r="145" fill="#fff"/>
+<path d="M145 210 Q120 65 195 125 Q256 80 317 125 Q392 65 367 210" fill="#A78BFA"/>
+<circle cx="205" cy="270" r="16" fill="#51465f"/><circle cx="307" cy="270" r="16" fill="#51465f"/>
+<path d="M220 325 Q256 350 292 325" fill="none" stroke="#FF8FBE" stroke-width="15" stroke-linecap="round"/>
+<text x="256" y="465" text-anchor="middle" font-size="48" font-family="sans-serif" font-weight="bold" fill="#6D5BA8">できた！</text>
+</svg>

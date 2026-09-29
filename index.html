@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#A78BFA">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="タブレットチェック">
+<link rel="manifest" href="manifest.json">
+<title>タブレットまえの5つのおやくそく</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;overflow:hidden;font-family:"Noto Sans JP","Hiragino Maru Gothic ProN",sans-serif;background:linear-gradient(135deg,#FFF4D8,#E9F7FF);color:#51465f;touch-action:manipulation}
+.app{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 18px 24px}
+.header{width:min(760px,100%);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.title{font-size:clamp(22px,5.5vw,36px);font-weight:900;color:#6D5BA8;text-shadow:2px 2px 0 #fff}
+.stars{font-size:clamp(25px,6vw,38px);white-space:nowrap}
+.progress-wrap{width:min(760px,100%);margin:10px 0 18px}
+.progress-bg{height:22px;border-radius:99px;background:#fff;border:3px solid #E7DDF8;overflow:hidden}
+.progress{height:100%;width:0;background:linear-gradient(90deg,#FFD86B,#FF9FC5,#A7D8FF);border-radius:99px;transition:.45s}
+.card{width:min(760px,100%);flex:1;max-height:650px;min-height:430px;background:rgba(255,255,255,.92);border:5px solid #fff;border-radius:38px;box-shadow:0 12px 35px rgba(103,79,145,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:24px 20px}
+.cloud{position:absolute;font-size:44px;opacity:.55}.c1{left:15px;top:18px}.c2{right:20px;bottom:18px}
+.character{font-size:clamp(75px,18vw,125px);line-height:1;margin:2px 0 8px;filter:drop-shadow(0 7px 3px rgba(100,80,120,.12))}
+.step{font-size:20px;font-weight:900;color:#A078C9;margin-bottom:8px}
+.question{font-size:clamp(30px,7.8vw,54px);font-weight:900;text-align:center;line-height:1.35;margin:0 0 25px;color:#55465F}
+.button{width:min(560px,94%);border:0;border-radius:28px;padding:19px 15px;background:linear-gradient(180deg,#FFB6D7,#FF8FBE);color:white;font-size:clamp(23px,5.8vw,34px);font-weight:900;box-shadow:0 7px 0 #DE6C9B;cursor:pointer}
+.button:active{transform:translateY(5px);box-shadow:0 2px 0 #DE6C9B}
+.small{font-size:16px;margin-top:14px;color:#91869A;font-weight:700}
+.complete{display:none;width:min(760px,100%);flex:1;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(255,255,255,.9);border-radius:38px;padding:25px;box-shadow:0 12px 35px rgba(103,79,145,.15)}
+.celebrate{font-size:clamp(75px,20vw,135px);animation:bounce 1s infinite alternate}
+@keyframes bounce{to{transform:translateY(-10px) rotate(3deg)}}
+.complete h2{font-size:clamp(38px,9vw,65px);color:#F08AB8;margin:12px 0}
+.complete p{font-size:clamp(21px,5vw,29px);font-weight:800;margin:4px 0 20px}
+.reset{border:3px solid #CBB9E9;background:white;color:#8069A8;border-radius:22px;padding:13px 24px;font-size:20px;font-weight:900}
+.install{display:none;margin-top:10px;border:3px solid #CBB9E9;background:#fff;color:#8069A8;border-radius:18px;padding:10px 16px;font-size:17px;font-weight:900}
+.spark{position:absolute;font-size:28px;animation:float 2.2s infinite ease-in-out}
+.s1{left:8%;top:30%}.s2{right:8%;top:20%;animation-delay:.5s}.s3{left:13%;bottom:17%;animation-delay:1s}.s4{right:14%;bottom:30%;animation-delay:1.4s}
+@keyframes float{50%{transform:translateY(-12px) rotate(12deg)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="title">🌈 タブレットまえの<br>5つのおやくそく</div>
+    <div class="stars">⭐️⭐️</div>
+  </div>
+  <button class="install" id="install">📱 ホーム画面に追加</button>
+  <div class="progress-wrap"><div class="progress-bg"><div class="progress" id="progress"></div></div></div>
+
+  <div class="card" id="card">
+    <div class="cloud c1">☁️</div><div class="cloud c2">☁️</div>
+    <div class="spark s1">✨</div><div class="spark s2">⭐</div>
+    <div class="spark s3">🌟</div><div class="spark s4">✨</div>
+    <div class="character" id="character">🐰</div>
+    <div class="step" id="step"></div>
+    <div class="question" id="question"></div>
+    <button class="button" id="yes">できたよ！ 👍</button>
+    <div class="small">できたらボタンをおしてね</div>
+  </div>
+
+  <div class="complete" id="complete">
+    <div class="celebrate">🐰🎉🌈</div>
+    <h2>ぜんぶできた！</h2>
+    <p>すごい！ タブレットタイムだよ📱✨</p>
+    <button class="reset" id="reset">もういちどチェックする</button>
+  </div>
+</div>
+
+<script>
+const checks=[
+  ["服を着たかな？","🐻"],
+  ["パンツを履いたかな？","🐰"],
+  ["泣いてないかな？","🐶"],
+  ["指チュチュしてないかな？","🐱"],
+  ["歯みがきしたかな？","🦷"]
+];
+let current=0;
+
+function speakGreat(){
+  if("speechSynthesis" in window){
+    window.speechSynthesis.cancel();
+    const voice=new SpeechSynthesisUtterance("すごい！");
+    voice.lang="ja-JP"; voice.rate=.9; voice.pitch=1.25; voice.volume=1;
+    window.speechSynthesis.speak(voice);
+  }
+}
+function render(){
+  question.textContent=checks[current][0];
+  character.textContent=checks[current][1];
+  step.textContent=`${current+1}ばんめ / 5ばん`;
+  progress.style.width=`${(current/5)*100}%`;
+}
+yes.onclick=()=>{
+  speakGreat();
+  current++;
+  if(current>=5){
+    card.style.display="none"; complete.style.display="flex"; progress.style.width="100%";
+  }else render();
+};
+reset.onclick=()=>{
+  current=0; complete.style.display="none"; card.style.display="flex"; render();
+};
+
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt",(e)=>{
+  e.preventDefault(); deferredPrompt=e; install.style.display="block";
+});
+install.onclick=async()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  install.style.display="none";
+};
+window.addEventListener("appinstalled",()=>install.style.display="none");
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+render();
+</script>
+</body>
+</html>

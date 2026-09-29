@@ -1,0 +1,25 @@
+{
+  "name": "タブレットまえの5つのおやくそく",
+  "short_name": "タブレットチェック",
+  "description": "タブレットを使う前に5つのおやくそくを確認する子ども向けアプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF4D8",
+  "theme_color": "#A78BFA",
+  "lang": "ja-JP",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
